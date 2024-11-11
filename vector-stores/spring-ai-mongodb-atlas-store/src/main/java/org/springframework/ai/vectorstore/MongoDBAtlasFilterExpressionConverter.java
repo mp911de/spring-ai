@@ -32,6 +32,16 @@ import static org.springframework.ai.vectorstore.filter.Filter.ExpressionType.OR
  */
 public class MongoDBAtlasFilterExpressionConverter extends AbstractFilterExpressionConverter {
 
+	private final String metadataPrefix;
+
+	public MongoDBAtlasFilterExpressionConverter() {
+		this("metadata.");
+	}
+
+	public MongoDBAtlasFilterExpressionConverter(String metadataPrefix) {
+		this.metadataPrefix = metadataPrefix;
+	}
+
 	@Override
 	protected void doExpression(Filter.Expression expression, StringBuilder context) {
 		// Handling AND/OR
@@ -93,7 +103,7 @@ public class MongoDBAtlasFilterExpressionConverter extends AbstractFilterExpress
 	@Override
 	protected void doKey(Filter.Key filterKey, StringBuilder context) {
 		var identifier = (hasOuterQuotes(filterKey.key())) ? removeOuterQuotes(filterKey.key()) : filterKey.key();
-		context.append("\"metadata." + identifier + "\"");
+		context.append("\""+metadataPrefix + identifier + "\"");
 	}
 
 }
