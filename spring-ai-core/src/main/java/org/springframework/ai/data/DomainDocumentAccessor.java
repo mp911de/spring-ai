@@ -15,6 +15,7 @@
  */
 package org.springframework.ai.data;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -131,6 +132,20 @@ public class DomainDocumentAccessor {
 		}
 
 		return content instanceof String s ? s : conversionService.convert(content, String.class);
+	}
+
+	/**
+	 * Associate the {@code embedding} vector with the given entity {@code object}. The entity class must contain a
+	 * embedding property annotated with {@code @Embedding}.
+	 *
+	 * @param object the entity object to hold the embedding vector.
+	 * @param embedding embedding vector.
+	 * @return
+	 * @param <T>
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> T setEmbedding(T object, float[] embedding) {
+		return setEmbedding(object, (Collection<? extends Number>) conversionService.convert(embedding, Collection.class));
 	}
 
 	/**
